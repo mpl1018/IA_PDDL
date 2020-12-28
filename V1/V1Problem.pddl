@@ -23,6 +23,7 @@ d0 d1 - day )
 
 (:goal (and
     (forall (?x - media) (imply (wantToWatch ?x) (mediaAsignedToDay ?x)))
+    (forall (?x - media) (forall (?y - media) (imply (and (wantToWatch ?x) (antecedent ?y ?x) (not (watched ?y))) (mediaAsignedToDay ?y))))
 ))
 
 )
