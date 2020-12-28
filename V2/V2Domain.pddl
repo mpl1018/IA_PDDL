@@ -16,19 +16,14 @@
     (parallel ?a - media ?b - media) ;a and b are parallel
     (wantToWatch ?a - media) ; user wants to watch a
     (watched ?a - media) ; a is already wathced
-    (mediaAsignedToDay ?a - media)
+    (mediaAsigned ?a)
+    (mediaAsignedToDay ?a - media ?d - day) 
 )
 
 
 (:functions ;todo: define numeric functions here
     (dayNum ?d - day)
-
-    (lastDayAntecedentAssignment ?m - media)
-    (numAntecedents ?m - media)
-    (numAntecedentsAssignedOrWatched ?m - media)
-
     (firstDayParallelAssignment ?m - media)
-
 )
 
 ;define actions here
@@ -38,12 +33,6 @@
     :effect (wantToWatch ?a)    
 )
 
-(:action addParallelToWishList
-    :parameters (?a - media ?b - media)
-    :precondition (and (or (parallel ?a ?b)(parallel ?b ?a)) (wantToWatch ?a)(not (watched ?b)))
-    :effect (and (wantToWatch ?b))
-)
-
 (:action addParallelToWishList2
     :parameters (?a - media ?b - media)
     :precondition (and (or (parallel ?a ?b)(parallel ?b ?a)) (wantToWatch ?b)(not (watched ?a)))
@@ -51,22 +40,29 @@
 )
 
 
-
 (:action asignMediaToDay
     :parameters (?a - media ?d - day)
-    :precondition (and (wantToWatch ?a) (not (mediaAsignedToDay ?a)) (> (dayNum ?d) (lastDayAntecedentAssignment ?a)) (= (numAntecedents ?a) (numAntecedentsAssignedOrWatched ?a)) (<= (- (dayNum ?d) (firstDayParallelAssignment ?a)) 1))
-    :effect (and (mediaAsignedToDay ?a)  
-    (forall (?x - media) (when (antecedent ?a ?x) 
-    (and (assign (lastDayAntecedentAssignment ?x) (dayNum ?d))
-    (increase (numAntecedentsAssignedOrWatched ?x) 1))))
-    
-    (forall (?x - media) (when 
-    (and (or (parallel ?a ?x) (parallel ?x ?a)) (> (firstDayParallelAssignment ?x) (dayNum ?d)))
-
-    (assign (firstDayParallelAssignment ?x) (dayNum ?d))
-    ))
-    
+    :precondition 
+    (and (wantToWatch ?a) (not (mediaAsigned ?a)) (<= (- (dayNum ?d) (firstDayParallelAssignment ?a)) 1) 
+        (forall (?x - media) 
+            (and 
+                (imply (antecedent ?x ?a) (or (mediaAsigned ?x) (watched ?x)) ) 
+                (forall (?dx - day) 
+                    (imply (and (mediaAsignedToDay ?x ?dx) (antecedent ?x ?a) ) (< (dayNum ?dx) (dayNum ?d)))
+                )
+            )
+        )
     )
+    :effect 
+    (and 
+        (mediaAsignedToDay ?a ?d) (mediaAsigned ?a) 
+        (forall (?x - media) 
+            (when 
+                (and (or (parallel ?a ?x) (parallel ?x ?a)) (> (firstDayParallelAssignment ?x) (dayNum ?d)))
+                (assign (firstDayParallelAssignment ?x) (dayNum ?d))
+            )
+        )
+    )
+)
+)
 
-)
-)

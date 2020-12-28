@@ -37,7 +37,7 @@
     (and (wantToWatch ?a) (not (mediaAsigned ?a)) 
         (forall (?x - media) 
             (and 
-                (imply (antecedent ?x ?a) (mediaAsigned ?x) ) 
+                (imply (antecedent ?x ?a) (or (mediaAsigned ?x) (watched ?x)) ) 
                 (forall (?dx - day) 
                     (imply (and (mediaAsignedToDay ?x ?dx) (antecedent ?x ?a) ) (< (dayNum ?dx) (dayNum ?d)))
                 )

@@ -40,7 +40,7 @@ void assign_wants(vector<bool>& w, double prob, const vector<bool>& excl) {
     }
 }
 
-vector<int> compute_n_ant_watched(const vector<bool>& w, const Matrix& M, const vector<int>& c) {
+/*vector<int> compute_n_ant_watched(const vector<bool>& w, const Matrix& M, const vector<int>& c) {
     vector<int> r(w.size(), 0);
     for(int i=0; i<M.size(); ++i) {
         for(int j=0; j<M[0].size(); ++j) {
@@ -50,11 +50,11 @@ vector<int> compute_n_ant_watched(const vector<bool>& w, const Matrix& M, const 
         }
     }
     return r;
-}
+}*/
 
 int main() {
     srand(time(NULL));
-    int n_media = rand()%15 + 5;                    // random entre 5 y 20
+    int n_media = rand()%10 + 5;                    // random entre 5 y 15
     int siz = rand()%(n_media-4) + 4;               // random entre 4 y n_media
     int n_dias = 5;                                 // numero de dias (por mejorar)
 
@@ -127,7 +127,8 @@ int main() {
         }
     }
 
-    for(int i=0; i<n_media; ++i) {
+    
+    /*for(int i=0; i<n_media; ++i) {
         f += "    (= (numAntecedents m";
         f += to_string(i+1);
         f += ") ";
@@ -137,13 +138,13 @@ int main() {
 
     vector<int> n_ant_watched = compute_n_ant_watched(watched, M, c);
 
-    for(int i=0; i<n_media; ++i) {
+   for(int i=0; i<n_media; ++i) {
         f += "    (= (numAntecedentsAssignedOrWatched m";
         f += to_string(i+1);
         f += ") ";
         f += to_string(n_ant_watched[i]);
         f += ")\n";
-    }
+    }*/
 
     for(int i=0; i<n_dias; ++i) {
         f += "    (= (dayNum d";
@@ -153,20 +154,18 @@ int main() {
         f += ")\n";
     }
 
-    for(int i=0; i<n_media; ++i) {
+  /*  for(int i=0; i<n_media; ++i) {
         f += "    (= (lastDayAntecedentAssignment m";
         f += to_string(i+1);
         f += ") -1)\n";
-    }
+    }*/
 
     f += ")";
     salto_lin(f);
 
-    f += "(:goal (and\n";
-    f += "    (forall (?x - media) (imply (wantToWatch ?x) (mediaAsignedToDay ?x)))\n";
-    f += "    (forall (?x - media) (forall (?y - media) (imply (and (wantToWatch ?x) (antecedent ?y ?x) (not (watched ?y))) (mediaAsignedToDay ?y))))\n";
-    f += "))\n";
-    
+    f += 
+    "(:goal (and (forall (?x - media) (imply (wantToWatch ?x) (mediaAsigned ?x)))))";
+
     salto_lin(f);
 
     f += ")";
