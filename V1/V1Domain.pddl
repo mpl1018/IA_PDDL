@@ -15,15 +15,13 @@
     (antecedent ?a - media ?b - media) ;a is an antecedent of b
     (wantToWatch ?a - media) ; user wants to watch a
     (watched ?a - media) ; a is already wathced
-    (mediaAsignedToDay ?a - media)
+    (mediaAsigned ?a)
+    (mediaAsignedToDay ?a - media ?d - day) 
 )
 
 
 (:functions ;todo: define numeric functions here
     (dayNum ?d - day)
-    (lastDayAntecedentAssignment ?m - media)
-    (numAntecedents ?m - media)
-    (numAntecedentsAssignedOrWatched ?m - media)
 )
 
 ;define actions here
@@ -35,11 +33,16 @@
 
 (:action asignMediaToDay
     :parameters (?a - media ?d - day)
-    :precondition (and (wantToWatch ?a) (not (mediaAsignedToDay ?a)) (> (dayNum ?d) (lastDayAntecedentAssignment ?a)) (= (numAntecedents ?a) (numAntecedentsAssignedOrWatched ?a)))
-    :effect (and (mediaAsignedToDay ?a)  
-    (forall (?x - media) (when (antecedent ?a ?x) 
-    (and (assign (lastDayAntecedentAssignment ?x) (dayNum ?d))
-    (increase (numAntecedentsAssignedOrWatched ?x) 1)))))
-)
-
+    :precondition 
+    (and (wantToWatch ?a) (not (mediaAsigned ?a)) 
+        (forall (?x - media) 
+            (and 
+                (imply (antecedent ?x ?a) (mediaAsigned ?x) ) 
+                (forall (?dx - day) 
+                    (imply (and (mediaAsignedToDay ?x ?dx) (antecedent ?x ?a) ) (< (dayNum ?dx) (dayNum ?d)))
+                )
+            )
+        )
+    )
+    :effect (and (mediaAsignedToDay ?a ?d) (mediaAsigned ?a)))
 )

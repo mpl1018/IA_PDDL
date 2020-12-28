@@ -3,24 +3,34 @@
 (:objects m1 m2 m3 - media
 d0 d1 - day )
 
+(:objects m1 m2 m3 m4 - media
+d0 d1 - day )
+
 (:init
-    (wantToWatch m2)
-    (antecedent m1 m2)
-    (parallel m2 m3)
+    (wantToWatch m4)
+    (antecedent m1 m4)
+    (antecedent m2 m4)
+    (antecedent m3 m4)
     (= (numAntecedents m1) 0)
-    (= (numAntecedents m2) 1)
+    (= (numAntecedents m2) 0)
     (= (numAntecedents m3) 0)
+    (= (numAntecedents m4) 3)
     (= (numAntecedentsAssignedOrWatched m1) 0)
     (= (numAntecedentsAssignedOrWatched m2) 0)
     (= (numAntecedentsAssignedOrWatched m3) 0)
+    (= (numAntecedentsAssignedOrWatched m4) 0)
     (= (dayNum d0) 0)
     (= (dayNum d1) 1)
+  ;;  (= (dayAssignmentCount d0) 0)
+  ;;  (= (dayAssignmentCount d1) 0)
     (= (lastDayAntecedentAssignment m1) -1)
     (= (lastDayAntecedentAssignment m2) -1)
     (= (lastDayAntecedentAssignment m3) -1)
+    (= (lastDayAntecedentAssignment m4) -1)
     (= (firstDayParallelAssignment m1) 1000)
     (= (firstDayParallelAssignment m2) 1000)
     (= (firstDayParallelAssignment m3) 1000)
+    (= (firstDayParallelAssignment m4) 1000)
 
 )
 
