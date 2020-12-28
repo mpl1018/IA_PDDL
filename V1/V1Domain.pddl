@@ -23,7 +23,7 @@
     (dayNum ?d - day)
     (lastDayAntecedentAssignment ?m - media)
     (numAntecedents ?m - media)
-    (numAntecedentsAssigned ?m - media)
+    (numAntecedentsAssignedOrWatched ?m - media)
 )
 
 ;define actions here
@@ -35,11 +35,11 @@
 
 (:action asignMediaToDay
     :parameters (?a - media ?d - day)
-    :precondition (and (wantToWatch ?a) (not (mediaAsignedToDay ?a)) (> (dayNum ?d) (lastDayAntecedentAssignment ?a)) (= (numAntecedents ?a) (numAntecedentsAssigned ?a)))
+    :precondition (and (wantToWatch ?a) (not (mediaAsignedToDay ?a)) (> (dayNum ?d) (lastDayAntecedentAssignment ?a)) (= (numAntecedents ?a) (numAntecedentsAssignedOrWatched ?a)))
     :effect (and (mediaAsignedToDay ?a)  
     (forall (?x - media) (when (antecedent ?a ?x) 
     (and (assign (lastDayAntecedentAssignment ?x) (dayNum ?d))
-    (increase (numAntecedentsAssigned ?x) 1)))))
+    (increase (numAntecedentsAssignedOrWatched ?x) 1)))))
 )
 
 )
