@@ -6,6 +6,7 @@
 
 using namespace std;
 typedef vector< vector<int> > Matrix;
+typedef vector< vector<bool> > MatrixB;
 
 Matrix random_DAG(int siz, double prob, vector<int>& n_ant, const vector<int>& c) {
     Matrix r(siz, vector<int>(siz, 0));
@@ -52,6 +53,19 @@ void assign_wants(vector<bool>& w, double prob, const vector<bool>& excl) {
     }
     return r;
 }*/
+
+MatrixB assign_paral(const Matrix& M, const vector<int>& c, double prob) {
+    MatrixB r(c.size(), vector<bool>(c.size(), false));
+    for(int i=0; i<M.size(); ++i) {
+        for(int j=0; j<M[0].size(); ++j) {
+            if(M[i][j] == 0 and not r[c[j]][c[i]] && i!=j) {
+                double t = (double) rand()/RAND_MAX;
+                if(prob > t) r[c[i]][c[j]] = true;
+            }
+        }
+    }
+    return r;
+}
 
 int main() {
     srand(time(NULL));
@@ -105,6 +119,20 @@ int main() {
             }
         }
     }
+
+    MatrixB paral = assign_paral(M, c, 0.08);
+    for(int i=0; i<paral.size(); ++i) {
+        for(int j=0; j<paral[0].size(); ++j) {
+            if(paral[i][j]) {
+                f += "    (parallel m";
+                f += to_string(i);
+                f += " m";
+                f += to_string(j);
+                f += ")\n";
+            }
+        }
+    }
+
 
     vector<bool> watched(n_media,false);
     vector<bool> wants(n_media, false);
@@ -161,11 +189,19 @@ int main() {
         f += ") -1)\n";
     }*/
 
+    for(int i=0; i<n_media; ++i) {
+        f += "    (= (firstDayParallelAssignment m";
+        f += to_string(i+1);
+        f += ") 1000)\n";
+    }
+
     f += ")";
     salto_lin(f);
 
-    f += 
-    "(:goal (and (forall (?x - media) (imply (wantToWatch ?x) (mediaAsigned ?x)))))";
+    f += "(:goal (and\n";
+    f += "    (forall (?x - media) (imply (wantToWatch ?x) (mediaAsigned ?x)))\n";
+    f += "    (forall (?x - media) (forall (?y - media) (imply (and (wantToWatch ?x) (or (parallel ?x ?y) (parallel ?y ?x)) (not (watched ?y))  ) (mediaAsigned ?y)) ) )\n";
+    f += "))";
 
     salto_lin(f);
 
