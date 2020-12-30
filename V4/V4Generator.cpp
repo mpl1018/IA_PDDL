@@ -87,7 +87,7 @@ int main() {
     vector<int> n_ant(n_media, 0);
     Matrix M = random_DAG(siz, 0.3, n_ant, c);                // DAG random que representa relaciones entre medias
 
-    string f = "(define (problem V2Problem) (:domain Redflix)"; // cabecera inicial
+    string f = "(define (problem V3Problem) (:domain Redflix)"; // cabecera inicial
     salto_lin(f);                                               // salto de linea de formato
     
     f += "(:objects";
@@ -183,6 +183,30 @@ int main() {
         f += ")\n";
     }
 
+    for(int i=0; i<n_dias; ++i) {
+        f += "    (= (dayMinutesCount d";
+        f += to_string(i);
+        f += ") ";
+        f += to_string(i);
+        f += ")\n";
+    }
+
+    for(int i=0; i<n_dias; ++i) {
+        f += "    (= (dayAssignmentCount d";
+        f += to_string(i);
+        f += ") ";
+        f += to_string(i);
+        f += ")\n";
+    }
+
+    for(int i=0; i<n_media; ++i) {
+        f += "    (= (mediaDuration m";
+        f += to_string(i+1);
+        f += ") ";
+        f += to_string(rand()%90 + 30);
+        f += ")\n";
+    }
+
   /*  for(int i=0; i<n_media; ++i) {
         f += "    (= (lastDayAntecedentAssignment m";
         f += to_string(i+1);
@@ -207,7 +231,7 @@ int main() {
 
     f += ")";
 
-    std::ofstream outfile ("V2ProblemaGenerado.pddl");
+    std::ofstream outfile ("V4ProblemaGenerado.pddl");
     outfile << f;
     outfile.close();
 }

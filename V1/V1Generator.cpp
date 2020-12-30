@@ -171,7 +171,7 @@ int main() {
 
     f += ")";
 
-    std::ofstream outfile ("V2ProblemaGenerado.pddl");
+    std::ofstream outfile ("V1ProblemaGenerado.pddl");
     outfile << f;
     outfile.close();
 }
