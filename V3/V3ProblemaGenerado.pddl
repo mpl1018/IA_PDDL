@@ -1,19 +1,15 @@
 (define (problem V3Problem) (:domain Redflix)
 
-(:objects m1 m2 m3 m4 m5 m6 m7 m8 m9 m10 m11 m12 m13 m14 - media
+(:objects m1 m2 m3 m4 m5 m6 m7 m8 - media
 d0 d1 d2 d3 d4 - day )
 
 (:init
-    (antecedent m14 m9)
-    (antecedent m12 m11)
-    (antecedent m9 m11)
-    (antecedent m11 m2)
-    (parallel m0 m1)
-    (wantToWatch m11)
-    (wantToWatch m13)
-    (wantToWatch m14)
-    (watched m10)
-    (watched m12)
+    (antecedent m1 m3)
+    (antecedent m3 m2)
+    (antecedent m8 m7)
+    (wantToWatch m1)
+    (wantToWatch m8)
+    (watched m3)
     (= (dayNum d0) 0)
     (= (dayNum d1) 1)
     (= (dayNum d2) 2)
@@ -32,12 +28,6 @@ d0 d1 d2 d3 d4 - day )
     (= (firstDayParallelAssignment m6) 1000)
     (= (firstDayParallelAssignment m7) 1000)
     (= (firstDayParallelAssignment m8) 1000)
-    (= (firstDayParallelAssignment m9) 1000)
-    (= (firstDayParallelAssignment m10) 1000)
-    (= (firstDayParallelAssignment m11) 1000)
-    (= (firstDayParallelAssignment m12) 1000)
-    (= (firstDayParallelAssignment m13) 1000)
-    (= (firstDayParallelAssignment m14) 1000)
 )
 
 (:goal (and

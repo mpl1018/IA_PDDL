@@ -71,7 +71,7 @@ int main() {
     srand(time(NULL));
     int n_media = rand()%10 + 5;                    // random entre 5 y 15
     int siz = rand()%(n_media-4) + 4;               // random entre 4 y n_media
-    int n_dias = 5;                                 // numero de dias (por mejorar)
+    int n_dias = rand()%(n_media-5) + 5;            // random entre 5 y n_media
 
     vector<int> c(n_media);
     vector<bool> aux(n_media, false);
@@ -125,9 +125,9 @@ int main() {
         for(int j=0; j<paral[0].size(); ++j) {
             if(paral[i][j]) {
                 f += "    (parallel m";
-                f += to_string(i);
+                f += to_string(i+1);
                 f += " m";
-                f += to_string(j);
+                f += to_string(j+1);
                 f += ")\n";
             }
         }
